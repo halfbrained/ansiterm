@@ -117,14 +117,14 @@ class Ansiterm:
     def get_cursor_idx(self):
         return self.cursor['y'] * self.cols + self.cursor['x']
 
-    def _evaluate_sequence(self, char, numbers):
+    def _evaluate_sequence(self, char, numbers, input):
         """
         Evaluates a sequence (i.e., this changes the state of the terminal).
         Is meant to be called with the return values from _parse_sequence as arguments.
         """
         # Translate the cursor into an index into our 1-dimensional tileset.
         curidx = self.get_cursor_idx()
-
+        
         # Sets cursor position
         if char == 'H':
             self.cursor['y'] = numbers[0] - 1 # 1-based indexes
@@ -146,6 +146,7 @@ class Ansiterm:
                 range_ = (0, self.cols * self.rows - 1)
             else:
                 raise Exception('Unknown argument for J parameter: '
+                                #'%s (input=%r)' % (numbers, input[:20]))
                                 '%s (input=%r)' % (numbers, input[:20]))
             for i in range(*range_):
                 self.tiles[i].reset()
@@ -162,6 +163,7 @@ class Ansiterm:
                 range_ = (curidx % self.cols, curidx % self.cols + self.cols)
             else:
                 raise Exception('Unknown argument for K parameter: '
+                                #'%s (input=%r)' % (numbers, input[:20]))
                                 '%s (input=%r)' % (numbers, input[:20]))
             for i in range(*range_):
                 self.tiles[i].reset()
@@ -190,7 +192,7 @@ class Ansiterm:
             # sequence.
             parsed, input = self._parse_sequence(input)
             if parsed:
-                self._evaluate_sequence(*parsed)
+                self._evaluate_sequence(*parsed, input)
             else:
                 # If we end up here, the character should should just be
                 # added to the current tile and the cursor should be updated.
