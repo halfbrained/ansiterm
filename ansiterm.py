@@ -146,7 +146,6 @@ class Ansiterm:
                 range_ = (0, self.cols * self.rows - 1)
             else:
                 raise Exception('Unknown argument for J parameter: '
-                                #'%s (input=%r)' % (numbers, input[:20]))
                                 '%s (input=%r)' % (numbers, input[:20]))
             for i in range(*range_):
                 self.tiles[i].reset()
@@ -163,7 +162,6 @@ class Ansiterm:
                 range_ = (curidx % self.cols, curidx % self.cols + self.cols)
             else:
                 raise Exception('Unknown argument for K parameter: '
-                                #'%s (input=%r)' % (numbers, input[:20]))
                                 '%s (input=%r)' % (numbers, input[:20]))
             for i in range(*range_):
                 self.tiles[i].reset()
